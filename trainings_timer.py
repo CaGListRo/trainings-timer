@@ -66,8 +66,10 @@ class TrainingsTimer:
         self.start_button.render(self.screen)
         self.stop_button.render(self.screen)
         minute: int = int(self.time / 60)
+        minute_zero: str = "" if minute > 9 else "0"
         second: int = int(self.time % 60)
-        time_to_blit: pg.Surface = self.time_font.render(f"{str(minute)}:{str(second)}", True, "white")
+        second_zero: str = "" if second > 9 else "0"
+        time_to_blit: pg.Surface = self.time_font.render(f"{minute_zero}{str(minute)}:{second_zero}{str(second)}", True, "white")
         time_x_pos: int = round(self.WIDTH / 2 - time_to_blit.get_width() / 2)
         time_y_pos: int = round(self.HEIGHT / 2 - time_to_blit.get_height() / 2)
         self.screen.blit(time_to_blit, (time_x_pos, time_y_pos))
