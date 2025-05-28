@@ -54,8 +54,8 @@ class TrainingsTimer:
             self.timer_running = True if not self.pre_timer else False
             self.pre_timer_running = True if self.pre_timer else False
         if self.stop_button.check_clicked():
-            self.timer_running = False if not self.pre_timer else True
-            self.pre_timer_running = False if self.pre_timer else True
+            self.timer_running = False
+            self.pre_timer_running = False
 
     def create_buttons(self) -> None:
         """ Creates all the buttons. """
@@ -76,9 +76,6 @@ class TrainingsTimer:
             time -= dt
         else:
             time += dt
-
-        if time <= 0 and self.count_down:
-            self.count_down = False
 
         return time
 
@@ -140,6 +137,8 @@ class TrainingsTimer:
             self.check_buttons()
             if self.timer_running:
                 self.time = self.handle_time(self.time, dt)
+                if self.time <= 0 and self.count_down:
+                    self.count_down = False
             if self.pre_timer_running:
                 self.pre_timer_time = self.handle_time(self.pre_timer_time, dt)
                 if self.pre_timer_time <= 0:
