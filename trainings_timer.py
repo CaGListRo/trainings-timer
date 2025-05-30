@@ -21,7 +21,10 @@ class TrainingsTimer:
         self.pre_timer_time: float = 0.0
         self.pre_timer_running: bool = False
         self.fps: int = 0
+        self.time_button_list: List[Btn] = []
         self.create_buttons()
+
+        
 
         # fonts
         self.small_font: pg.font.Font = pg.font.SysFont("comic sans", 23)
@@ -43,7 +46,7 @@ class TrainingsTimer:
         """ Checks if a button is clicked. """
         for idx, btn in enumerate(self.time_button_list):
             if btn.check_clicked() and not self.timer_running:
-                self.time = float((idx + 1) * 2 * 60)
+                self.time = btn.get_value() * 60
                 self.count_down = True
         for idx, btn in enumerate(self.pre_timer_button_list):
             if btn.check_clicked() and not self.timer_running:
@@ -59,7 +62,13 @@ class TrainingsTimer:
 
     def create_buttons(self) -> None:
         """ Creates all the buttons. """
-        self.time_button_list: List[Btn] = [Btn(pos=(5 + i * 55, 10), size=(50, 50), text=(str((i + 1) * 2)), color="white") for i in range(10)]
+        for i in range(2, 12):
+            button_value: str = ""
+            if i <= 5:
+                button_value = str(i)
+            else:
+                button_value = str(5 * (i - 4))
+            self.time_button_list.append(Btn(pos=(5 + (i - 2) * 55, 10), size=(50, 50), text=(button_value), color="white"))
         self.pre_timer_button_list: List[Btn] = [Btn(pos=(5, 170 + i * 55), size=(50, 50), text=str(i * 10), color="white") for i in range(4)]
         self.start_button: Btn = Btn(pos=(175, 455), size=(100, 50), text="START", color="green")
         self.stop_button: Btn = Btn(pos=(280, 455), size=(100, 50), text="STOP", color="red")

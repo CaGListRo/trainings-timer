@@ -40,10 +40,11 @@ class Button:
         self.hover_color: tuple[int, int, int] = self.BUTTON_COLORS[color]["hover_color"]
         self.color: tuple[int, int, int] = self.main_color
         font: pg.font.Font = pg.font.SysFont("comicsans", self.BUTTON_FONT_SIZE)
-        self.text: pg.Surface = font.render(text, True, "white")
-        self.text_shadow: pg.Surface = font.render(text, True, "black")
-        self.text_pos: tuple[int, int] = (int(self.pos.x + self.size[0] // 2 - self.text.get_width() // 2),
-                                     int(self.pos.y + self.size[1] // 2 - self.text.get_height() // 2))
+        self.text: str = text
+        self.text_surface: pg.Surface = font.render(self.text, True, "white")
+        self.text_shadow: pg.Surface = font.render(self.text, True, "black")
+        self.text_pos: tuple[int, int] = (int(self.pos.x + self.size[0] // 2 - self.text_surface.get_width() // 2),
+                                     int(self.pos.y + self.size[1] // 2 - self.text_surface.get_height() // 2))
         self.clicked: bool = False
         self.offset: int = self.BUTTON_OFFSET
         self.rect: pg.Rect = self.create_rect()
@@ -67,6 +68,10 @@ class Button:
     def create_rect(self) -> pg.Rect:
         """ Creates a rectangle for the button. """
         return pg.Rect(self.pos.x, self.pos.y - self.offset, self.size[0], self.size[1])
+    
+    def get_value(self) -> int:
+        """ Returns the value of the button. """
+        return int(self.text)
 
     def render(self, surf: pg.Surface) -> None:
         """ Renders the button on the given surface.
@@ -78,5 +83,5 @@ class Button:
         pg.draw.rect(surf, self.color, self.rect, border_radius=5)
         pg.draw.rect(surf, self.frame_color, self.rect, width=3, border_radius=5)
         surf.blit(self.text_shadow, (self.text_pos[0], self.text_pos[1] - self.offset))
-        surf.blit(self.text, (self.text_pos[0] - 2, self.text_pos[1] - self.offset - 2))
+        surf.blit(self.text_surface, (self.text_pos[0] - 2, self.text_pos[1] - self.offset - 2))
 
